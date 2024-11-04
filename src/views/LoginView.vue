@@ -1,0 +1,25 @@
+<script setup>
+import LoginForm from '@/components/Auth/LoginForm/LoginForm.vue'
+import { useRouter } from 'vue-router'
+
+import { useMutation } from '@/composables/useMutation.js'
+import { authService } from '@/authService/index.js'
+
+
+const router = useRouter()
+
+const { data, isLoading, error, mutation: handleLogin} = useMutation({
+  mutationFn: data => authService.login(data),
+  onSuccess: () => router.replace('/map')
+})
+
+</script>
+
+<template>
+  <LoginForm
+    @submit="handleLogin"
+    :is-loading="isLoading"
+  />
+  <div v-if="error" class="text-red-500" >{{ error.message }}</div>
+</template>
+
